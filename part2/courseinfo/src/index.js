@@ -30,14 +30,12 @@ const Content = (props) => {
   );
 };
 
-const Total = (props) => {
-  const [part1, part2, part3] = props.parts;
-
+const Total = ({ parts }) => {
+  const total = parts.reduce((total, present) => total + present.exercises, 0);
   return (
     <div>
       <p>
-        Total number of exercises{" "}
-        <strong>{part1.exercises + part2.exercises + part3.exercises}</strong>
+        Total number of exercises <strong>{total}</strong>
       </p>
     </div>
   );
