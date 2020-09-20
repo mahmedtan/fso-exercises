@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Filter from "./Filter";
+import PersonForm from "./PersonForm";
+import Persons from "./Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -27,46 +30,32 @@ const App = () => {
     else window.alert(`${newName} is already added to the phonebook`);
 
     setNewName("");
+    setNewNumber("");
   };
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
   };
 
-  const reg = new RegExp(filter, "i");
-  const names = persons
-    .filter((person) => reg.test(person.name))
-    .map((person) => (
-      <p key={person.name}>
-        {person.name} {person.number}
-      </p>
-    ));
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with{" "}
-        <input type="text" value={filter} onChange={handleFilterChange} />
-      </div>
-      <h2>add a new</h2>
-      <form onSubmit={addNewName}>
-        <div>
-          name:{" "}
-          <input type="text" value={newName} onChange={handleNameChange} />
-        </div>
 
-        <div>
-          number:{" "}
-          <input type="text" value={newNumber} onChange={handleNumberChange} />
-        </div>
+      <Filter filter={filter} handleFilterChange={handleFilterChange} />
 
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <h2>Add a new</h2>
+
+      <PersonForm
+        handleNameChange={handleNameChange}
+        newName={newName}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+        addNewName={addNewName}
+      />
+
       <h2>Numbers</h2>
-      {names}
+
+      <Persons filter={filter} persons={persons} />
 
       {/* <pre style={{ backgroundColor: "MistyRose", margin: 30, padding: 10 }}>
         <code>
