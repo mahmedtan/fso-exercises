@@ -2,6 +2,8 @@ img {
   margin: 10px;
   width: 120px;
   height: auto;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px black;
 }
 body {
   padding: 20px;
