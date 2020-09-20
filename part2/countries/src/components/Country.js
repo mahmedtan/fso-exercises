@@ -13,9 +13,6 @@ function Country({ country }) {
         ))}
       </ul>
       <img src={country.flag} alt={`${country.name}'s flag`} />
-      {/* <pre style={{ backgroundColor: "MistyRose", margin: 50, padding: 10 }}>
-        <code>{JSON.stringify({ country }, null, 4)}</code>
-      </pre> */}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import Country from "./Country";
+import CountryList from "./CountryList";
 
 function Content({ countries }) {
   return (
@@ -7,9 +8,7 @@ function Content({ countries }) {
       {countries.length > 10 ? (
         <p>Too many matches,specify another filter</p>
       ) : countries.length > 1 ? (
-        countries.map((country) => (
-          <p key={country.numericCode}>{country.name}</p>
-        ))
+        <CountryList countries={countries} />
       ) : (
         <Country country={countries[0]} />
       )}
