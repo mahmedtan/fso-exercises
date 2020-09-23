@@ -3,12 +3,14 @@ import Filter from "./Filter";
 import phonebook from "../services/phonebook";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
+import Alert from "./Alert";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     phonebook.getAll().then((data) => setPersons(data));
@@ -43,6 +45,10 @@ const App = () => {
       phonebook.create(person).then((data) => {
         setPersons(persons.concat(data));
       });
+      setMessage(`Added ${newName}`);
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
     } else if (
       window.confirm(
         `${newName} is already added to the phonebook, replace the old number with the new one?`
@@ -55,6 +61,10 @@ const App = () => {
         setPersons(
           persons.map((item) => (item.id === person.id ? data : item))
         );
+        setMessage(`Changed ${newName}`);
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
       });
     }
 
@@ -69,6 +79,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Alert message={message} />
 
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
 

@@ -1,0 +1,9 @@
+.alert {
+  color: green;
+}
+.box {
+  border: 5px solid green;
+  margin: 10px;
+  border-radius: 20px;
+  padding: 10px;
+}
