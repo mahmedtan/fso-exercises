@@ -27,9 +27,13 @@ const App = () => {
   const addNewName = (e) => {
     e.preventDefault();
 
-    if (!persons.find((person) => person.name === newName))
-      setPersons(persons.concat({ name: newName, number: newNumber }));
-    else window.alert(`${newName} is already added to the phonebook`);
+    if (!persons.find((person) => person.name === newName)) {
+      const payload = { name: newName, number: newNumber };
+
+      Axios.post("http://localhost:3001/persons", payload).then((response) => {
+        setPersons(persons.concat(response.data));
+      });
+    } else window.alert(`${newName} is already added to the phonebook`);
 
     setNewName("");
     setNewNumber("");
