@@ -1,4 +1,3 @@
-import Axios from "axios";
 import React, { useState, useEffect } from "react";
 import Filter from "./Filter";
 import phonebook from "../services/phonebook";
@@ -23,6 +22,18 @@ const App = () => {
     setNewNumber(e.target.value);
   };
 
+  const handleDelete = (id) => {
+    const person = persons.find((person) => person.id === id);
+
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      phonebook
+        .remove(id)
+        .then((response) => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch(console.error);
+    }
+  };
   const addNewName = (e) => {
     e.preventDefault();
 
@@ -60,7 +71,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons filter={filter} persons={persons} />
+      <Persons filter={filter} persons={persons} handleDelete={handleDelete} />
 
       {/* <pre style={{ backgroundColor: "MistyRose", margin: 30, padding: 10 }}>
         <code>Debug: {JSON.stringify({ persons }, null, 4)}</code>

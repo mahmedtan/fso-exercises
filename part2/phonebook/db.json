@@ -1,49 +1,29 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
+      "name": "Riker",
+      "number": "23467876",
       "id": 2
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
+      "name": "Dwayne",
+      "number": "24353463",
       "id": 3
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
+      "name": "Captain",
+      "number": "099878909",
       "id": 4
     },
     {
-      "name": "Muhammad",
-      "number": "Ahmed",
+      "name": "Shakeel",
+      "number": "23645345",
       "id": 5
     },
     {
-      "name": "Ahmed",
-      "number": "0303-47643232",
+      "name": "Lamar",
+      "number": "2435354",
       "id": 6
-    },
-    {
-      "name": "Ajmed",
-      "number": "35335",
-      "id": 7
-    },
-    {
-      "name": "Kobra Kai",
-      "number": "123456",
-      "id": 8
-    },
-    {
-      "name": "Bugs Bunny",
-      "number": "45636",
-      "id": 9
     }
   ]
 }

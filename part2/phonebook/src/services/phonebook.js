@@ -8,4 +8,8 @@ const getAll = () => {
 const create = (payload) => {
   return axios.post(baseUrl, payload).then((response) => response.data);
 };
-export default { getAll, create };
+
+const remove = (id) => {
+  return axios.delete(`${baseUrl}/${id}`);
+};
+export default { getAll, create, remove };
