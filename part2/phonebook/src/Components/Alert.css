@@ -1,9 +1,18 @@
-.alert {
-  color: green;
-}
-.box {
+.success {
   border: 5px solid green;
   margin: 10px;
   border-radius: 20px;
   padding: 10px;
+}
+.success > .alert {
+  color: green;
+}
+.error {
+  border: 5px solid red;
+  margin: 10px;
+  border-radius: 20px;
+  padding: 10px;
+}
+.error > .alert {
+  color: red;
 }

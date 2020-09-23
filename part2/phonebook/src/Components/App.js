@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "" });
 
   useEffect(() => {
     phonebook.getAll().then((data) => setPersons(data));
@@ -45,7 +45,7 @@ const App = () => {
       phonebook.create(person).then((data) => {
         setPersons(persons.concat(data));
       });
-      setMessage(`Added ${newName}`);
+      setMessage({ text: `Added ${newName}`, type: "success" });
       setTimeout(() => {
         setMessage("");
       }, 2000);
@@ -57,15 +57,29 @@ const App = () => {
       const person = persons.find((person) => person.name === newName);
       const updatedPerson = { ...person, number: newNumber };
 
-      phonebook.put(person.id, updatedPerson).then((data) => {
-        setPersons(
-          persons.map((item) => (item.id === person.id ? data : item))
-        );
-        setMessage(`Changed ${newName}`);
-        setTimeout(() => {
-          setMessage("");
-        }, 2000);
-      });
+      phonebook
+        .put(person.id, updatedPerson)
+        .then((data) => {
+          setPersons(
+            persons.map((item) => (item.id === person.id ? data : item))
+          );
+        })
+        .catch((error) => {
+          setMessage({
+            text: `Information for ${newName} has already been removed from the server.`,
+            type: "error",
+          });
+          setPersons(persons.filter((person) => person.name !== newName));
+
+          setTimeout(() => {
+            setMessage({});
+          }, 2000);
+        });
+
+      setMessage({ text: `Changed ${newName}`, type: "success" });
+      setTimeout(() => {
+        setMessage({});
+      }, 2000);
     }
 
     setNewName("");
@@ -79,7 +93,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Alert message={message} />
+      <Alert message={message.text} type={message.type} />
 
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
 

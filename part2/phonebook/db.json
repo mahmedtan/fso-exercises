@@ -1,16 +1,6 @@
 {
   "persons": [
     {
-      "name": "Alice",
-      "number": "65432",
-      "id": 1
-    },
-    {
-      "name": "Walker",
-      "number": "12446462",
-      "id": 2
-    },
-    {
       "name": "Samuel",
       "number": "5363562424",
       "id": 3
@@ -51,8 +41,8 @@
       "id": 10
     },
     {
-      "name": "Jerome K Jerome",
-      "number": "1967-34567",
+      "name": "Muahmm",
+      "number": "654",
       "id": 11
     }
   ]

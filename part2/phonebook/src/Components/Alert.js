@@ -1,10 +1,10 @@
 import React from "react";
 import "./Alert.css";
 
-function Alert({ message }) {
+function Alert({ message, type }) {
   if (message)
     return (
-      <div className="box">
+      <div className={type}>
         <h3 className="alert">{message}</h3>
       </div>
     );
