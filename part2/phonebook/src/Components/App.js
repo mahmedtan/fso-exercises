@@ -1,6 +1,7 @@
 import Axios from "axios";
 import React, { useState, useEffect } from "react";
 import Filter from "./Filter";
+import phonebook from "../services/phonebook";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
 
@@ -11,9 +12,7 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/persons").then((result) => {
-      setPersons(result.data);
-    });
+    phonebook.getAll().then((data) => setPersons(data));
   }, [setPersons]);
 
   const handleNameChange = (e) => {
@@ -30,8 +29,8 @@ const App = () => {
     if (!persons.find((person) => person.name === newName)) {
       const payload = { name: newName, number: newNumber };
 
-      Axios.post("http://localhost:3001/persons", payload).then((response) => {
-        setPersons(persons.concat(response.data));
+      phonebook.create(payload).then((data) => {
+        setPersons(persons.concat(data));
       });
     } else window.alert(`${newName} is already added to the phonebook`);
 
