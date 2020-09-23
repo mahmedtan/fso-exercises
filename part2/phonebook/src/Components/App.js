@@ -28,7 +28,7 @@ const App = () => {
     if (window.confirm(`Delete ${person.name} ?`)) {
       phonebook
         .remove(id)
-        .then((response) => {
+        .then(() => {
           setPersons(persons.filter((person) => person.id !== id));
         })
         .catch(console.error);
@@ -38,12 +38,25 @@ const App = () => {
     e.preventDefault();
 
     if (!persons.find((person) => person.name === newName)) {
-      const payload = { name: newName, number: newNumber };
+      const person = { name: newName, number: newNumber };
 
-      phonebook.create(payload).then((data) => {
+      phonebook.create(person).then((data) => {
         setPersons(persons.concat(data));
       });
-    } else window.alert(`${newName} is already added to the phonebook`);
+    } else if (
+      window.confirm(
+        `${newName} is already added to the phonebook, replace the old number with the new one?`
+      )
+    ) {
+      const person = persons.find((person) => person.name === newName);
+      const updatedPerson = { ...person, number: newNumber };
+
+      phonebook.put(person.id, updatedPerson).then((data) => {
+        setPersons(
+          persons.map((item) => (item.id === person.id ? data : item))
+        );
+      });
+    }
 
     setNewName("");
     setNewNumber("");
