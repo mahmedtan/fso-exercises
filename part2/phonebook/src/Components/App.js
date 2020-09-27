@@ -42,13 +42,25 @@ const App = () => {
     if (!persons.find((person) => person.name === newName)) {
       const person = { name: newName, number: newNumber };
 
-      phonebook.create(person).then((data) => {
-        setPersons(persons.concat(data));
-      });
-      setMessage({ text: `Added ${newName}`, type: "success" });
-      setTimeout(() => {
-        setMessage("");
-      }, 2000);
+      phonebook
+        .create(person)
+        .then((data) => {
+          setPersons(persons.concat(data));
+          setMessage({ text: `Added ${newName}`, type: "success" });
+          setTimeout(() => {
+            setMessage("");
+          }, 5000);
+        })
+        .catch((err) => {
+          setMessage({
+            text: err.response.data.error,
+            type: "error",
+          });
+
+          setTimeout(() => {
+            setMessage("");
+          }, 5000);
+        });
     } else if (
       window.confirm(
         `${newName} is already added to the phonebook, replace the old number with the new one?`
@@ -63,23 +75,22 @@ const App = () => {
           setPersons(
             persons.map((item) => (item.id === person.id ? data : item))
           );
-        })
-        .catch((error) => {
-          setMessage({
-            text: `Information for ${newName} has already been removed from the server.`,
-            type: "error",
-          });
-          setPersons(persons.filter((person) => person.name !== newName));
-
+          setMessage({ text: `Changed ${newName}`, type: "success" });
           setTimeout(() => {
             setMessage({});
-          }, 2000);
-        });
+          }, 5000);
+        })
+        .catch((error) => {
+          setPersons(persons.filter((person) => person.name !== newName));
 
-      setMessage({ text: `Changed ${newName}`, type: "success" });
-      setTimeout(() => {
-        setMessage({});
-      }, 2000);
+          setMessage({
+            text: error.response.data.error,
+            type: "error",
+          });
+          setTimeout(() => {
+            setMessage({});
+          }, 5000);
+        });
     }
 
     setNewName("");
