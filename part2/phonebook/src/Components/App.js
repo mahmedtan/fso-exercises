@@ -81,7 +81,8 @@ const App = () => {
           }, 5000);
         })
         .catch((error) => {
-          setPersons(persons.filter((person) => person.name !== newName));
+          if (error.response.status !== 400)
+            setPersons(persons.filter((person) => person.name !== newName));
 
           setMessage({
             text: error.response.data.error,
