@@ -107,3 +107,23 @@ describe("favorite blog", () => {
     });
   });
 });
+describe("most blogs", () => {
+  test("of an empty list is undefined", () => {
+    const result = listHelper.mostBlogs([]);
+    expect(result).toEqual(undefined);
+  });
+  test("when list has only one blog, equals that author", () => {
+    const result = listHelper.mostBlogs(listOneBlog);
+    expect(result).toEqual({
+      author: "Michael Chan",
+      blogs: 1,
+    });
+  });
+  test("of a bigger list is calculated correctly", () => {
+    const result = listHelper.mostBlogs(list);
+    expect(result).toEqual({
+      author: "Robert C. Martin",
+      blogs: 3,
+    });
+  });
+});
