@@ -19,9 +19,23 @@ const mostBlogs = (blogs) => {
   const arrBlogs = authors.map((item) => item.blogs);
   return authors.find((item) => Math.max(...arrBlogs) === item.blogs);
 };
+const mostLikes = (blogs) => {
+  const authors = [];
+  const findAuthor = (item) => authors.find((i) => i.author === item.author);
+
+  blogs.forEach((item) =>
+    findAuthor(item)
+      ? (findAuthor(item).likes += item.likes)
+      : authors.push({ author: item.author, likes: item.likes })
+  );
+  const arrBlogs = authors.map((item) => item.likes);
+  return authors.find((item) => Math.max(...arrBlogs) === item.likes);
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
