@@ -72,6 +72,17 @@ describe("Blogs", () => {
       expect(blog.likes).toBeGreaterThanOrEqual(0)
     );
   });
+  test("should return a BAD request if title or url not provided", async () => {
+    const newBlog = {
+      url: "www.yuppy.com/post/345",
+      likes: 33,
+    };
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+  });
 });
 afterAll(() => {
   mongoose.connection.close();

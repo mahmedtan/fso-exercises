@@ -6,11 +6,14 @@ Router.get("/", async (request, response) => {
   response.json(blogs);
 });
 
-Router.post("/", (request, response) => {
-  const blog = new Blog(request.body);
-
-  blog.save().then((result) => {
+Router.post("/", async (request, response) => {
+  const { title, url } = request.body;
+  if (title && url) {
+    const blog = new Blog(request.body);
+    const result = await blog.save();
     response.status(201).json(result);
-  });
+  } else {
+    response.status(400).json({ error: "title or author prop missing" });
+  }
 });
 module.exports = Router;
