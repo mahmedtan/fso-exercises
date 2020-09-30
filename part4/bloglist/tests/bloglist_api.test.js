@@ -2,6 +2,7 @@ const app = require("../app");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const Blog = require("../models/Blog");
+const { request } = require("../app");
 
 const api = supertest(app);
 const initialBlogs = [
@@ -23,6 +24,7 @@ const initialBlogs = [
     url: "www.ricktavy.com/art/534",
   },
 ];
+
 beforeEach(async () => {
   await Blog.deleteMany({});
 
@@ -30,13 +32,14 @@ beforeEach(async () => {
   console.log("saved");
 });
 
-describe("Blogs", () => {
+describe("getting bloglist", () => {
   test("should be returned in JSON format and in full length", async () => {
     await api
       .get("/api/blogs/")
       .expect(200)
       .expect("Content-Type", /application\/json/);
     const response = await api.get("/api/blogs");
+
     expect(response.body).toHaveLength(initialBlogs.length);
   });
   test('should return a unique identifier "id"', async () => {
@@ -45,6 +48,16 @@ describe("Blogs", () => {
       expect(blog.id).toBeDefined();
     });
   });
+  test("should default likes to zero if not provided", async () => {
+    const response = await api.get("/api/blogs");
+
+    response.body.forEach((blog) =>
+      expect(blog.likes).toBeGreaterThanOrEqual(0)
+    );
+  });
+});
+
+describe("posting blogs", () => {
   test("should able to add a blog to the list", async () => {
     const newBlog = {
       title: "Kingdom of Russia",
@@ -65,13 +78,7 @@ describe("Blogs", () => {
       "Kingdom of Russia"
     );
   });
-  test("should default likes to zero if not provided", async () => {
-    const response = await api.get("/api/blogs");
 
-    response.body.forEach((blog) =>
-      expect(blog.likes).toBeGreaterThanOrEqual(0)
-    );
-  });
   test("should return a BAD request if title or url not provided", async () => {
     const newBlog = {
       url: "www.yuppy.com/post/345",
@@ -84,6 +91,19 @@ describe("Blogs", () => {
       .expect("Content-Type", /application\/json/);
   });
 });
+
+describe("deleting a blog", () => {
+  test("should remove the blog", async () => {
+    const response = await api.get("/api/blogs");
+    const { id } = response.body[0];
+
+    await api.delete(`/api/blogs/${id}`).expect(204);
+  });
+  test("should fail with 404 if id doesn't exit", async () => {
+    await api.delete(`/api/blogs/5f72161b551fe08ca3f63f74`).expect(404);
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });

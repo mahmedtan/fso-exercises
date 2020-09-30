@@ -16,4 +16,15 @@ Router.post("/", async (request, response) => {
     response.status(400).json({ error: "title or author prop missing" });
   }
 });
+Router.delete("/:id", async (req, res, next) => {
+  try {
+    const result = await Blog.findByIdAndDelete(req.params.id);
+
+    result ? res.status(204).json(result) : res.status(404).end();
+  } catch (error) {
+    res.status(400).end();
+    next(error);
+  }
+});
+
 module.exports = Router;
