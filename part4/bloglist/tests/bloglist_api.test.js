@@ -26,7 +26,7 @@ beforeEach(async () => {
 });
 
 describe("Blogs", () => {
-  test(" are returned in JSON format and in full length", async () => {
+  test("should be returned in JSON format and in full length", async () => {
     await api
       .get("/api/blogs/")
       .expect(200)
@@ -39,6 +39,26 @@ describe("Blogs", () => {
     response.body.forEach((blog) => {
       expect(blog.id).toBeDefined();
     });
+  });
+  test("should able to add a blog to the list", async () => {
+    const newBlog = {
+      title: "Kingdom of Russia",
+      author: "Randy",
+      url: "www.helyo.com/post/345",
+      likes: 43,
+    };
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const response = await api.get("/api/blogs");
+    expect(response.body).toHaveLength(initialBlogs.length + 1);
+
+    expect(response.body.map((blog) => blog.title)).toContain(
+      "Kingdom of Russia"
+    );
   });
 });
 afterAll(() => {
