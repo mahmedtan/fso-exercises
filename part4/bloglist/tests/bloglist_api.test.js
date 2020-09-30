@@ -17,6 +17,11 @@ const initialBlogs = [
     url: "www.liefeofme.com/article/42421",
     likes: 987654,
   },
+  {
+    title: "How to open a paint bucket",
+    author: "Rick Gervais",
+    url: "www.ricktavy.com/art/534",
+  },
 ];
 beforeEach(async () => {
   await Blog.deleteMany({});
@@ -58,6 +63,13 @@ describe("Blogs", () => {
 
     expect(response.body.map((blog) => blog.title)).toContain(
       "Kingdom of Russia"
+    );
+  });
+  test("should default likes to zero if not provided", async () => {
+    const response = await api.get("/api/blogs");
+
+    response.body.forEach((blog) =>
+      expect(blog.likes).toBeGreaterThanOrEqual(0)
     );
   });
 });
