@@ -26,30 +26,13 @@ beforeEach(async () => {
 });
 
 describe("Blogs", () => {
-  test("are returned as JSON", async () => {
-    await api
-      .get("/api/blogs/")
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
-  });
-  test("all blogs are returned", async () => {
+  test(" are returned in JSON format and in full length", async () => {
     await api
       .get("/api/blogs/")
       .expect(200)
       .expect("Content-Type", /application\/json/);
     const response = await api.get("/api/blogs");
     expect(response.body).toHaveLength(initialBlogs.length);
-  });
-
-  test("a specific blog is returned", async () => {
-    await api
-      .get("/api/blogs/")
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
-    const response = await api.get("/api/blogs");
-    expect(response.body.map((i) => i.title)).toContain(
-      "How to be a don chito"
-    );
   });
 });
 afterAll(() => {
