@@ -2,7 +2,6 @@ const app = require("../app");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const Blog = require("../models/Blog");
-const { request } = require("../app");
 
 const api = supertest(app);
 const initialBlogs = [
@@ -101,6 +100,23 @@ describe("deleting a blog", () => {
   });
   test("should fail with 404 if id doesn't exit", async () => {
     await api.delete(`/api/blogs/5f72161b551fe08ca3f63f74`).expect(404);
+  });
+});
+describe("updating a blog", () => {
+  test("should replace the blog with new data", async () => {
+    const response = await api.get("/api/blogs");
+    const { id } = response.body[0];
+    const updatedBlog = {
+      ...response[0],
+      likes: 1234,
+      title: "We the best music",
+    };
+
+    await api
+      .put(`/api/blogs/${id}`)
+      .send(updatedBlog)
+      .expect(202)
+      .expect("Content-Type", /application\//);
   });
 });
 
