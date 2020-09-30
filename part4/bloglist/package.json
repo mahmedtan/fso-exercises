@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose",
-    "start": "node index",
-    "dev": "nodemon index"
+    "test": "NODE_ENV=test jest --verbose --runInBand",
+    "start": "NODE_ENV=production node index",
+    "dev": "NODE_ENV=development  nodemon index"
   },
   "author": "M. Ahmed",
   "license": "MIT",
@@ -14,7 +14,8 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.10.7"
+    "mongoose": "^5.10.7",
+    "supertest": "^5.0.0"
   },
   "devDependencies": {
     "jest": "^26.4.2",
