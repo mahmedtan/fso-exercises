@@ -34,6 +34,12 @@ describe("Blogs", () => {
     const response = await api.get("/api/blogs");
     expect(response.body).toHaveLength(initialBlogs.length);
   });
+  test('should return a unique identifier "id"', async () => {
+    const response = await api.get("/api/blogs");
+    response.body.forEach((blog) => {
+      expect(blog.id).toBeDefined();
+    });
+  });
 });
 afterAll(() => {
   mongoose.connection.close();
