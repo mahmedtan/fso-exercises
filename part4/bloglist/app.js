@@ -19,4 +19,14 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/blogs", blogRouter);
 app.use("/api/users", userRouter);
+
+app.use((error, req, res, next) => {
+  console.log(error.name);
+
+  if (error.name === "ValidationError" || error.name === "ValidatorError") {
+    res.status(400).json({ error: error.message }).end();
+  }
+
+  next(error);
+});
 module.exports = app;
