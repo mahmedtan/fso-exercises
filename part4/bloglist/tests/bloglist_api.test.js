@@ -27,7 +27,9 @@ const initialBlogs = [
 beforeEach(async () => {
   await Blog.deleteMany({});
 
-  await Promise.all(initialBlogs.map(async (item) => new Blog(item).save()));
+  await Promise.all(
+    initialBlogs.map(async (item) => await new Blog(item).save())
+  );
   console.log("saved");
 });
 

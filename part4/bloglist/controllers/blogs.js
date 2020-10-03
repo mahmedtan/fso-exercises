@@ -1,16 +1,20 @@
 const Router = require("express").Router();
 const Blog = require("../models/Blog");
+const User = require("../models/User");
 
 Router.get("/", async (request, response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("user", { blogs: 0 });
   response.json(blogs);
 });
 
 Router.post("/", async (request, response) => {
   const { title, url } = request.body;
   if (title && url) {
-    const blog = new Blog(request.body);
+    const user = await User.findOne({});
+    const blog = new Blog({ ...request.body, user: user._id });
     const result = await blog.save();
+    user.blogs = user.blogs.concat(result._id);
+    await user.save();
     response.status(201).json(result);
   } else {
     response.status(400).json({ error: "title or author prop missing" });

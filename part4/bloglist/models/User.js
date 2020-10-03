@@ -6,6 +6,7 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true, minlength: 3 },
   name: { type: String },
   passwordHash: { type: String, required: true },
+  blogs: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
 });
 userSchema.plugin(uniqueValidator);
 
@@ -18,4 +19,4 @@ userSchema.set("toJSON", {
   },
 });
 
-module.exports = new model("User", userSchema);
+module.exports = model("User", userSchema);

@@ -1,8 +1,7 @@
 const Router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const { Mongoose, MongooseDocument, Error } = require("mongoose");
-const mongooseUniqueValidator = require("mongoose-unique-validator");
+const { Error } = require("mongoose");
 
 Router.post("/", async (req, res, next) => {
   const { username, password, name } = req.body;
@@ -20,15 +19,15 @@ Router.post("/", async (req, res, next) => {
         message: "password must be atleast 3 characters long",
       });
     }
-    const saveUser = await user.save();
-    res.json(saveUser);
+    const savedUser = await user.save();
+    res.status(201).json(savedUser);
   } catch (error) {
     next(error);
   }
 });
 
 Router.get("/", async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).populate("blogs", { user: 0, likes: 0 });
 
   res.json(users);
 });
