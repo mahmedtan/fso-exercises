@@ -14,9 +14,8 @@ Router.post("/", async (request, response, next) => {
   const { title, url } = request.body;
 
   try {
-    const decodedToken = jwt.verify(request.token, config.SECRET);
-
     if (title && url) {
+      const decodedToken = jwt.verify(request.token, config.SECRET);
       const user = await User.findById(decodedToken.id);
 
       const blog = new Blog({ ...request.body, user: user._id });
@@ -46,8 +45,8 @@ Router.put("/:id", async (req, res) => {
 
 Router.delete("/:id", async (req, res, next) => {
   try {
-    const { id } = jwt.verify(req.token, config.SECRET);
     const blog = await Blog.findById(req.params.id);
+    const { id } = jwt.verify(req.token, config.SECRET);
     if (!blog) {
       return res.status(404);
     } else if (blog.user.toString() === id) {
