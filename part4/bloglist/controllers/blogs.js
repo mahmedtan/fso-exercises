@@ -46,11 +46,19 @@ Router.put("/:id", async (req, res) => {
 
 Router.delete("/:id", async (req, res, next) => {
   try {
-    const result = await Blog.findByIdAndDelete(req.params.id);
-
-    result ? res.status(204).json(result) : res.status(404).end();
+    const { id } = jwt.verify(req.token, config.SECRET);
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return res.status(404);
+    } else if (blog.user.toString() === id) {
+      await Blog.findByIdAndDelete(req.params.id);
+      return res.status(204).end();
+    } else {
+      return res
+        .status(401)
+        .json({ error: "The token does not match the required user" });
+    }
   } catch (error) {
-    res.status(400).end();
     next(error);
   }
 });
