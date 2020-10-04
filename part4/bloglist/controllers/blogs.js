@@ -1,23 +1,43 @@
 const Router = require("express").Router();
 const Blog = require("../models/Blog");
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const config = require("../utils/config");
 
 Router.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { blogs: 0 });
   response.json(blogs);
 });
 
-Router.post("/", async (request, response) => {
+const getTokenFrom = (req) => {
+  const authorization = req.get("authorization");
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    return authorization.substring(7);
+  } else return null;
+};
+Router.post("/", async (request, response, next) => {
   const { title, url } = request.body;
-  if (title && url) {
-    const user = await User.findOne({});
-    const blog = new Blog({ ...request.body, user: user._id });
-    const result = await blog.save();
-    user.blogs = user.blogs.concat(result._id);
-    await user.save();
-    response.status(201).json(result);
-  } else {
-    response.status(400).json({ error: "title or author prop missing" });
+  const token = getTokenFrom(request);
+  try {
+    const decodedToken = jwt.verify(token, config.SECRET);
+
+    if (title && url) {
+      if (!token || !decodedToken.id) {
+        return response.status(401).json({ error: "token missing or invalid" });
+      }
+
+      const user = await User.findById(decodedToken.id);
+
+      const blog = new Blog({ ...request.body, user: user._id });
+      const result = await blog.save();
+      user.blogs = user.blogs.concat(result._id);
+      await user.save();
+      response.status(201).json(result);
+    } else {
+      response.status(400).json({ error: "title or author prop missing" });
+    }
+  } catch (error) {
+    next(error);
   }
 });
 

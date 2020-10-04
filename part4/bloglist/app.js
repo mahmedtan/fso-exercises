@@ -27,6 +27,9 @@ app.use((error, req, res, next) => {
   if (error.name === "ValidationError" || error.name === "ValidatorError") {
     res.status(400).json({ error: error.message }).end();
   }
+  if (error.name === "JsonWebTokenError") {
+    res.status(401).json({ error: "token missing or invalid" }).end();
+  }
 
   next(error);
 });
