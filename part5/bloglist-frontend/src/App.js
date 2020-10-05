@@ -11,6 +11,10 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    setUser(JSON.parse(window.localStorage.getItem("user")));
+  }, []);
+
+  useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
@@ -19,6 +23,7 @@ const App = () => {
 
     const user = await loginService.authorize({ username, password });
     setUser(user);
+    window.localStorage.setItem("user", JSON.stringify(user));
     setUsername("");
     setPassword("");
   };
@@ -27,6 +32,10 @@ const App = () => {
   };
   const passwordChange = ({ target }) => {
     setPassword(target.value);
+  };
+  const handleLogout = () => {
+    setUser(null);
+    window.localStorage.removeItem("user");
   };
 
   return (
@@ -40,7 +49,7 @@ const App = () => {
           usernameChange={usernameChange}
         />
       ) : (
-        <Blogs blogs={blogs} user={user} />
+        <Blogs blogs={blogs} user={user} handleLogout={handleLogout} />
       )}
 
       <pre style={{ backgroundColor: "MistyRose", margin: 50, padding: 10 }}>
