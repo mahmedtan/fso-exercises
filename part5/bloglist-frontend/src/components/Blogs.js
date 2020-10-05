@@ -15,10 +15,6 @@ function Blogs({ blogs, user, handleLogout, ...props }) {
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
-
-      <pre style={{ backgroundColor: "SkyBlue", margin: 50, padding: 10 }}>
-        <code>{JSON.stringify({ props }, null, 4)}</code>
-      </pre>
     </div>
   );
 }

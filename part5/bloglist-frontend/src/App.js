@@ -3,6 +3,7 @@ import Blogs from "./components/Blogs";
 import Login from "./components/Login";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -12,6 +13,7 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  const [message, setMessage] = useState(null);
 
   //Lifecycle Methods
 
@@ -32,25 +34,60 @@ const App = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    const user = await loginService.authorize({ username, password });
-    setUser(user);
-    window.localStorage.setItem("user", JSON.stringify(user));
-    setUsername("");
-    setPassword("");
-    blogService.setToken(user.token);
+    try {
+      const user = await loginService.authorize({ username, password });
+      setUser(user);
+      window.localStorage.setItem("user", JSON.stringify(user));
+      setUsername("");
+      setPassword("");
+      blogService.setToken(user.token);
+    } catch (error) {
+      console.log(error);
+      setMessage({
+        type: "error",
+        text: "username or password is not correct",
+      });
+      setTimeout(() => {
+        setMessage(null);
+      }, 4000);
+    }
   };
 
   const handleLogout = () => {
     setUser(null);
     window.localStorage.removeItem("user");
+    setMessage({
+      type: "success",
+      text: "Logged out",
+    });
+    setTimeout(() => {
+      setMessage(null);
+    }, 4000);
   };
 
   const handleNewBlog = async (e) => {
     e.preventDefault();
 
-    const blog = await blogService.post({ title, author, url });
-    setBlogs(blogs.concat(blog));
+    try {
+      const blog = await blogService.post({ title, author, url });
+      setBlogs(blogs.concat(blog));
+      setMessage({
+        type: "success",
+        text: `new blog ${blog.title} ${blog.author} added`,
+      });
+      setTimeout(() => {
+        setMessage(null);
+      }, 4000);
+    } catch (error) {
+      console.log(error);
+      setMessage({
+        type: "error",
+        text: "Author or url missing",
+      });
+      setTimeout(() => {
+        setMessage(null);
+      }, 4000);
+    }
   };
 
   //input handlers
@@ -65,6 +102,8 @@ const App = () => {
 
   return (
     <div>
+      {message && <Notification message={message} />}
+
       {!user ? (
         <Login
           handleLogin={handleLogin}
@@ -93,16 +132,6 @@ const App = () => {
           }}
         />
       )}
-
-      <pre style={{ backgroundColor: "MistyRose", margin: 50, padding: 10 }}>
-        <code>
-          {JSON.stringify(
-            { username, password, user, title, url, author },
-            null,
-            4
-          )}
-        </code>
-      </pre>
     </div>
   );
 };
