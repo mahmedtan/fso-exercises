@@ -9,51 +9,99 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
+
+  //Lifecycle Methods
 
   useEffect(() => {
-    setUser(JSON.parse(window.localStorage.getItem("user")));
+    const JSONUser = window.localStorage.getItem("user");
+    if (JSONUser) {
+      const user = JSON.parse(JSONUser);
+      setUser(user);
+      blogService.setToken(user.token);
+    }
   }, []);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  //Button handlers
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
     const user = await loginService.authorize({ username, password });
     setUser(user);
     window.localStorage.setItem("user", JSON.stringify(user));
     setUsername("");
     setPassword("");
+    blogService.setToken(user.token);
   };
-  const usernameChange = ({ target }) => {
-    setUsername(target.value);
-  };
-  const passwordChange = ({ target }) => {
-    setPassword(target.value);
-  };
+
   const handleLogout = () => {
     setUser(null);
     window.localStorage.removeItem("user");
+  };
+
+  const handleNewBlog = async (e) => {
+    e.preventDefault();
+
+    const blog = await blogService.post({ title, author, url });
+    setBlogs(blogs.concat(blog));
+  };
+
+  //input handlers
+
+  const usernameChange = ({ target }) => {
+    setUsername(target.value);
+  };
+
+  const passwordChange = ({ target }) => {
+    setPassword(target.value);
   };
 
   return (
     <div>
       {!user ? (
         <Login
-          handleSubmit={handleSubmit}
+          handleLogin={handleLogin}
           username={username}
           password={password}
           passwordChange={passwordChange}
           usernameChange={usernameChange}
         />
       ) : (
-        <Blogs blogs={blogs} user={user} handleLogout={handleLogout} />
+        <Blogs
+          blogs={blogs}
+          user={user}
+          handleLogout={handleLogout}
+          handleNewBlog={handleNewBlog}
+          title={title}
+          author={author}
+          url={url}
+          setTitle={({ target }) => {
+            setTitle(target.value);
+          }}
+          setAuthor={({ target }) => {
+            setAuthor(target.value);
+          }}
+          setUrl={({ target }) => {
+            setUrl(target.value);
+          }}
+        />
       )}
 
       <pre style={{ backgroundColor: "MistyRose", margin: 50, padding: 10 }}>
-        <code>{JSON.stringify({ username, password, user }, null, 4)}</code>
+        <code>
+          {JSON.stringify(
+            { username, password, user, title, url, author },
+            null,
+            4
+          )}
+        </code>
       </pre>
     </div>
   );

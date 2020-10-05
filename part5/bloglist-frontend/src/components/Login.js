@@ -1,7 +1,7 @@
 import React from "react";
 
 function Login({
-  handleSubmit,
+  handleLogin,
   username,
   usernameChange,
   password,
@@ -11,7 +11,7 @@ function Login({
     <div>
       <h2>Login to application</h2>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <div>
           <label htmlFor="username">
             username:
@@ -36,7 +36,7 @@ function Login({
             />
           </label>
         </div>
-        <input type="submit" />
+        <input type="submit" value="Login" />
       </form>
     </div>
   );
