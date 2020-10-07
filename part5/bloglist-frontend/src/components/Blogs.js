@@ -11,7 +11,7 @@ function Blogs({ blogs, user, handleLogout, blogRef, ...props }) {
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </div>
       <hr />
-      <Togglable name="new note" ref={blogRef}>
+      <Togglable open="new note" close="cancel" ref={blogRef}>
         <CreateBlog {...props} />
       </Togglable>
 

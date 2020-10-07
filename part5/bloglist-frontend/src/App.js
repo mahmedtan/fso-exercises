@@ -100,7 +100,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div style={{ fontFamily: "sans-serif" }}>
       {message && <Notification message={message} />}
 
       {!user ? (
