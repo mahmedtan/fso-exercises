@@ -2,6 +2,7 @@ import React from "react";
 import Blog from "./Blog";
 import CreateBlog from "./CreateBlog";
 import Togglable from "./Togglable";
+import PropTypes from "prop-types";
 
 function Blogs({
   blogs,
@@ -36,5 +37,12 @@ function Blogs({
     </div>
   );
 }
+Blogs.propTypes = {
+  user: PropTypes.object.isRequired,
+  blogs: PropTypes.array.isRequired,
+  handleLogout: PropTypes.func.isRequired,
+  handleLikes: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+};
 
 export default Blogs;

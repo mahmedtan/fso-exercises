@@ -9,7 +9,6 @@ let token = null;
 
 const setToken = (newToken) => {
   token = `bearer ${newToken}`;
-  console.log(token);
 };
 
 const replace = async (id, post) => {
@@ -17,8 +16,6 @@ const replace = async (id, post) => {
   return response.data;
 };
 const post = async (data) => {
-  console.log(token);
-
   const response = await axios.post(baseUrl, data, {
     headers: {
       Authorization: token,

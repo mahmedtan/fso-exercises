@@ -1,5 +1,5 @@
-import userEvent from "@testing-library/user-event";
 import React, { useState } from "react";
+
 const Blog = ({ blog, handleLikes, handleDelete, user }) => {
   const [visible, setVisible] = useState(false);
 
