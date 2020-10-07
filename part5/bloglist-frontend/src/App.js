@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Blogs from "./components/Blogs";
 import Login from "./components/Login";
 import blogService from "./services/blogs";
@@ -14,6 +14,7 @@ const App = () => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [message, setMessage] = useState(null);
+  const blogRef = useRef();
 
   //Lifecycle Methods
 
@@ -71,6 +72,10 @@ const App = () => {
     try {
       const blog = await blogService.post({ title, author, url });
       setBlogs(blogs.concat(blog));
+      setAuthor("");
+      setTitle("");
+      setUrl("");
+      blogRef.current.toggleVisibility();
       setMessage({
         type: "success",
         text: `new blog ${blog.title} ${blog.author} added`,
@@ -80,6 +85,7 @@ const App = () => {
       }, 4000);
     } catch (error) {
       console.log(error);
+
       setMessage({
         type: "error",
         text: "Author or url missing",
@@ -114,6 +120,7 @@ const App = () => {
         />
       ) : (
         <Blogs
+          blogRef={blogRef}
           blogs={blogs}
           user={user}
           handleLogout={handleLogout}

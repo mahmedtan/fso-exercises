@@ -51,7 +51,7 @@ function CreateBlog({
             />
           </label>
         </div>
-        <input type="submit" />
+        <input type="submit" value="create" />
       </form>
     </div>
   );
