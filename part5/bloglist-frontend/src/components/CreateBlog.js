@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
-function CreateBlog({
-  handleNewBlog,
-  title,
-  author,
-  url,
-  setTitle,
-  setAuthor,
-  setUrl,
-}) {
+function CreateBlog({ createNewBlog }) {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
+
+  const handleNewBlog = (e) => {
+    e.preventDefault();
+    createNewBlog({ title, author, url });
+    setAuthor("");
+    setTitle("");
+    setUrl("");
+  };
   return (
     <div>
       <h2>Create new blog</h2>
@@ -21,7 +24,7 @@ function CreateBlog({
               name="title"
               id="title"
               value={title}
-              onChange={setTitle}
+              onChange={({ target }) => setTitle(target.value)}
             />
           </label>
         </div>
@@ -34,7 +37,7 @@ function CreateBlog({
               name="author"
               id="author"
               value={author}
-              onChange={setAuthor}
+              onChange={({ target }) => setAuthor(target.value)}
             />
           </label>
         </div>
@@ -47,7 +50,7 @@ function CreateBlog({
               name="url"
               id="url"
               value={url}
-              onChange={setUrl}
+              onChange={({ target }) => setUrl(target.value)}
             />
           </label>
         </div>

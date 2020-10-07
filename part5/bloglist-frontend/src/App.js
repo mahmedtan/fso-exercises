@@ -10,9 +10,6 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
   const [message, setMessage] = useState(null);
   const blogRef = useRef();
 
@@ -66,15 +63,11 @@ const App = () => {
     }, 4000);
   };
 
-  const handleNewBlog = async (e) => {
-    e.preventDefault();
-
+  const handleNewBlog = async ({ title, author, url }) => {
     try {
       const blog = await blogService.post({ title, author, url });
       setBlogs(blogs.concat(blog));
-      setAuthor("");
-      setTitle("");
-      setUrl("");
+
       blogRef.current.toggleVisibility();
       setMessage({
         type: "success",
@@ -124,19 +117,7 @@ const App = () => {
           blogs={blogs}
           user={user}
           handleLogout={handleLogout}
-          handleNewBlog={handleNewBlog}
-          title={title}
-          author={author}
-          url={url}
-          setTitle={({ target }) => {
-            setTitle(target.value);
-          }}
-          setAuthor={({ target }) => {
-            setAuthor(target.value);
-          }}
-          setUrl={({ target }) => {
-            setUrl(target.value);
-          }}
+          createNewBlog={handleNewBlog}
         />
       )}
     </div>
