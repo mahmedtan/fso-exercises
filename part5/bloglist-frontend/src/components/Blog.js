@@ -22,7 +22,7 @@ const Blog = ({ blog, handleLikes }) => {
       }}
     >
       <strong>{blog.title}</strong> {blog.author}{" "}
-      <button onClick={toggleVisibility}>view</button>
+      <button onClick={toggleVisibility}>{visible ? "hide" : "view"}</button>
       {visible && (
         <div>
           {blog.url} <br /> likes: {blog.likes}{" "}
