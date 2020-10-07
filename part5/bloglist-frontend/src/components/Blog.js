@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLikes }) => {
   const [visible, setVisible] = useState(false);
+
   const toggleVisibility = () => {
     setVisible(!visible);
   };
@@ -24,7 +25,14 @@ const Blog = ({ blog }) => {
       <button onClick={toggleVisibility}>view</button>
       {visible && (
         <div>
-          {blog.url} <br /> likes: {blog.likes} <button>like</button>
+          {blog.url} <br /> likes: {blog.likes}{" "}
+          <button
+            onClick={() => {
+              handleLikes(blog);
+            }}
+          >
+            like
+          </button>
           <br /> {blog.author}
         </div>
       )}

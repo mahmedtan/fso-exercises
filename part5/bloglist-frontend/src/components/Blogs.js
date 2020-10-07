@@ -3,7 +3,7 @@ import Blog from "./Blog";
 import CreateBlog from "./CreateBlog";
 import Togglable from "./Togglable";
 
-function Blogs({ blogs, user, handleLogout, blogRef, ...props }) {
+function Blogs({ blogs, user, handleLogout, handleLikes, blogRef, ...props }) {
   return (
     <div>
       <h2>Blogs</h2>
@@ -16,7 +16,7 @@ function Blogs({ blogs, user, handleLogout, blogRef, ...props }) {
       </Togglable>
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLikes={handleLikes} />
       ))}
     </div>
   );

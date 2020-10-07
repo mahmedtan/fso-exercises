@@ -89,6 +89,22 @@ const App = () => {
     }
   };
 
+  const handleLikes = async (blog) => {
+    try {
+      console.log(blog);
+
+      const replacedBlog = await blogService.replace(blog.id, {
+        ...blog,
+        likes: blog.likes + 1,
+        user: blog.user.id,
+      });
+      setBlogs(
+        blogs.map((blog) => (blog.id === replacedBlog.id ? replacedBlog : blog))
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   //input handlers
 
   const usernameChange = ({ target }) => {
@@ -116,6 +132,7 @@ const App = () => {
           blogRef={blogRef}
           blogs={blogs}
           user={user}
+          handleLikes={handleLikes}
           handleLogout={handleLogout}
           createNewBlog={handleNewBlog}
         />

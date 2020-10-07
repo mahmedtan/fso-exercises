@@ -12,6 +12,10 @@ const setToken = (newToken) => {
   console.log(token);
 };
 
+const replace = async (id, post) => {
+  const response = await axios.put(`${baseUrl}/${id}`, post);
+  return response.data;
+};
 const post = async (data) => {
   console.log(token);
 
@@ -23,4 +27,4 @@ const post = async (data) => {
   return response.data;
 };
 
-export default { getAll, setToken, post };
+export default { getAll, setToken, post, replace };
