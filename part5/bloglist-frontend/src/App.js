@@ -107,6 +107,17 @@ const App = () => {
       console.log(error);
     }
   };
+
+  const handleDelete = async (blog) => {
+    try {
+      if (window.confirm(`Remove ${blog.title} ${blog.author}`)) {
+        await blogService.remove(blog.id);
+        setBlogs(blogs.filter((item) => item.id !== blog.id));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   //input handlers
 
   const usernameChange = ({ target }) => {
@@ -135,6 +146,7 @@ const App = () => {
           blogs={blogs}
           user={user}
           handleLikes={handleLikes}
+          handleDelete={handleDelete}
           handleLogout={handleLogout}
           createNewBlog={handleNewBlog}
         />

@@ -3,12 +3,21 @@ import Blog from "./Blog";
 import CreateBlog from "./CreateBlog";
 import Togglable from "./Togglable";
 
-function Blogs({ blogs, user, handleLogout, handleLikes, blogRef, ...props }) {
+function Blogs({
+  blogs,
+  user,
+  handleLogout,
+  handleLikes,
+  handleDelete,
+  blogRef,
+  ...props
+}) {
   return (
     <div>
       <h2>Blogs</h2>
       <div>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
+        <strong>{user.name}</strong> logged in{" "}
+        <button onClick={handleLogout}>logout</button>
       </div>
       <hr />
       <Togglable open="new note" close="cancel" ref={blogRef}>
@@ -16,7 +25,13 @@ function Blogs({ blogs, user, handleLogout, handleLikes, blogRef, ...props }) {
       </Togglable>
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} handleLikes={handleLikes} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleDelete={handleDelete}
+          handleLikes={handleLikes}
+          user={user}
+        />
       ))}
     </div>
   );

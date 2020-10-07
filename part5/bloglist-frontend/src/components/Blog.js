@@ -1,5 +1,6 @@
+import userEvent from "@testing-library/user-event";
 import React, { useState } from "react";
-const Blog = ({ blog, handleLikes }) => {
+const Blog = ({ blog, handleLikes, handleDelete, user }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleVisibility = () => {
@@ -25,7 +26,10 @@ const Blog = ({ blog, handleLikes }) => {
       <button onClick={toggleVisibility}>{visible ? "hide" : "view"}</button>
       {visible && (
         <div>
-          {blog.url} <br /> likes: {blog.likes}{" "}
+          <a style={{ textDecoration: "none", color: "red" }} href={blog.url}>
+            {blog.url}
+          </a>{" "}
+          <br /> likes: {blog.likes}{" "}
           <button
             onClick={() => {
               handleLikes(blog);
@@ -33,7 +37,13 @@ const Blog = ({ blog, handleLikes }) => {
           >
             like
           </button>
-          <br /> {blog.author}
+          <br /> {blog.user.name}
+          <br />
+          {user.username === blog.user.username ? (
+            <button onClick={() => handleDelete(blog)}>remove</button>
+          ) : (
+            ""
+          )}
         </div>
       )}
     </div>

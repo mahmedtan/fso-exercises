@@ -26,5 +26,14 @@ const post = async (data) => {
   });
   return response.data;
 };
+const remove = async (id) => {
+  const response = await axios.delete(`${baseUrl}/${id}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
 
-export default { getAll, setToken, post, replace };
+  return response.data;
+};
+
+export default { getAll, setToken, post, replace, remove };
