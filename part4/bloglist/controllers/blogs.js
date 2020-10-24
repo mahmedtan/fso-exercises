@@ -31,14 +31,13 @@ Router.post("/", async (request, response, next) => {
   }
 });
 
-Router.put("/:id", async (req, res) => {
+Router.put("/:id", async (req, res, next) => {
   try {
     const doc = await Blog.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
     doc ? res.status(202).json(doc) : res.status(404).end();
   } catch (error) {
-    res.status(400).end();
     next(error);
   }
 });
