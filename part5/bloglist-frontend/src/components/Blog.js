@@ -8,6 +8,7 @@ const Blog = ({ blog, handleLikes, handleDelete, user }) => {
   };
   return (
     <div
+      className="blogContainer"
       style={{
         borderRadius: 10,
         background: "#09e79e",
