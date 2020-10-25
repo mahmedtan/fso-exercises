@@ -24,7 +24,9 @@ const Blog = ({ blog, handleLikes, handleDelete, user }) => {
       }}
     >
       <strong>{blog.title}</strong> {blog.author}{" "}
-      <button onClick={toggleVisibility}>{visible ? "hide" : "view"}</button>
+      <button className="show" onClick={toggleVisibility}>
+        {visible ? "hide" : "view"}
+      </button>
       {visible && (
         <div>
           <a style={{ textDecoration: "none", color: "red" }} href={blog.url}>
