@@ -34,6 +34,7 @@ const Blog = ({ blog, handleLikes, handleDelete, user }) => {
           </a>{" "}
           <br /> likes: {blog.likes}{" "}
           <button
+            className="likes"
             onClick={() => {
               handleLikes(blog);
             }}

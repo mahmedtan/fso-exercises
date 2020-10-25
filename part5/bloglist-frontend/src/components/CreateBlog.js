@@ -15,7 +15,7 @@ function CreateBlog({ createNewBlog }) {
   return (
     <div>
       <h2>Create new blog</h2>
-      <form onSubmit={handleNewBlog}>
+      <form onSubmit={handleNewBlog} id="form">
         <div>
           <label htmlFor="title">
             title:

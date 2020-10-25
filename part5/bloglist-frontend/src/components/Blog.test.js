@@ -5,6 +5,8 @@ import Blog from "./Blog";
 
 describe("<Blog/>", () => {
   let component;
+  let mockFN = jest.fn();
+
   beforeEach(() => {
     component = render(
       <Blog
@@ -16,6 +18,7 @@ describe("<Blog/>", () => {
           user: { name: "Ahmed", username: "mahmedtan" },
         }}
         user={{ username: "Ahmed" }}
+        handleLikes={mockFN}
       />
     );
   });
@@ -32,5 +35,13 @@ describe("<Blog/>", () => {
     const text = component.container.querySelector(".blogContainer");
     expect(text).toHaveTextContent("www.example.com");
     expect(text).toHaveTextContent("7");
+  });
+  test("must support multiple click on likes button", () => {
+    const button = component.container.querySelector(".show");
+    fireEvent.click(button);
+    const likesButton = component.container.querySelector(".likes");
+    fireEvent.click(likesButton);
+    fireEvent.click(likesButton);
+    expect(mockFN.mock.calls).toHaveLength(2);
   });
 });
