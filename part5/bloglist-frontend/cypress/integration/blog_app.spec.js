@@ -6,6 +6,11 @@ describe("Blog app", function () {
       password: "123Abc3ewq",
       name: "Jamie",
     });
+    cy.request("POST", "http://localhost:3002/api/users", {
+      username: "kryton",
+      password: "123Abc3ewq",
+      name: "Kanye",
+    });
     cy.visit("http://localhost:3000");
   });
   it("Login form is shown", function () {
@@ -44,6 +49,19 @@ describe("Blog app", function () {
         cy.contains("view").click();
         cy.contains("like").click();
         cy.contains("likes: 1");
+      });
+      it("A blog can be removed by the creator", function () {
+        cy.addBlog("How to be fun", "Jackall", "http://www.iksf.com");
+        cy.contains("view").click();
+        cy.contains("remove").click();
+        cy.get("html").should("not.contain", "How to be fun");
+      });
+      it("A blog cannot be removed by other users", function () {
+        cy.addBlog("How to be fun", "Jackall", "http://www.iksf.com");
+        cy.contains("logout").click();
+        cy.login("kryton", "123Abc3ewq");
+        cy.contains("view").click();
+        cy.get("html").should("not.contain", "remove");
       });
     });
   });
