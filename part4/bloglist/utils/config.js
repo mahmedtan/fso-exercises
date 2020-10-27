@@ -15,4 +15,5 @@ module.exports = {
   PORT,
   MONGODB_URI,
   SECRET,
+  NODE_ENV: process.env.NODE_ENV,
 };
