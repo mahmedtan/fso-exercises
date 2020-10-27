@@ -27,5 +27,24 @@ describe("Blog app", function () {
       cy.get("#login").click();
       cy.contains("username or password is not correct");
     });
+    describe("When logged in", function () {
+      beforeEach(function () {
+        cy.login("krypton", "123Abc3ewq");
+      });
+      it("A blog can be created", function () {
+        cy.contains("new note").click();
+        cy.get("#title").type("What is going on");
+        cy.get("#author").type("Abdoollah");
+        cy.get("#url").type("http://www.google.com");
+        cy.get("#createblog").click();
+        cy.contains("What is going on");
+      });
+      it("A blog can be liked", function () {
+        cy.addBlog("How to be fun", "Jackall", "http://www.iksf.com");
+        cy.contains("view").click();
+        cy.contains("like").click();
+        cy.contains("likes: 1");
+      });
+    });
   });
 });

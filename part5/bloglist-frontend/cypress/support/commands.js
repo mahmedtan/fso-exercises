@@ -10,7 +10,19 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
+Cypress.Commands.add("login", (email, password) => {
+  cy.get("#username").type(email);
+  cy.get("#password").type(password);
+  cy.get("#login").click();
+});
+Cypress.Commands.add("addBlog", (title, author, url) => {
+  cy.contains("new note").click();
+  cy.get("#title").type(title);
+  cy.get("#author").type(author);
+  cy.get("#url").type(url);
+  cy.get("#createblog").click();
+  cy.contains(title);
+});
 //
 //
 // -- This is a child command --
