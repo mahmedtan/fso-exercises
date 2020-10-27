@@ -36,7 +36,7 @@ function Login({
             />
           </label>
         </div>
-        <input type="submit" value="Login" />
+        <input type="submit" value="Login" id="login" />
       </form>
     </div>
   );
