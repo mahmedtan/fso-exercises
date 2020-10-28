@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addVote, createAnec } from "./reducers/anecdoteReducer";
+import { addVote, addAnec } from "./reducers/anecdoteReducer";
 
 const App = () => {
   const anecdotes = useSelector((state) =>
@@ -14,7 +14,7 @@ const App = () => {
   };
   const handleNewAnec = (e) => {
     e.preventDefault();
-    dispatch(createAnec(e.target.note.value));
+    dispatch(addAnec(e.target.note.value));
   };
 
   return (

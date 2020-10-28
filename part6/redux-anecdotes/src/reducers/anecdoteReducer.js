@@ -40,7 +40,7 @@ export const addVote = (id) => {
     },
   };
 };
-export const createAnec = (anecdote) => {
+export const addAnec = (anecdote) => {
   return {
     type: "ADD_ANEC",
     data: asObject(anecdote),
