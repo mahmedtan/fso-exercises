@@ -20,9 +20,13 @@ Router.post("/", async (request, response, next) => {
 
       const blog = new Blog({ ...request.body, user: user._id });
       const result = await blog.save();
+      const savedBlog = await Blog.findById(result._id).populate("user", {
+        blogs: 0,
+      });
+
       user.blogs = user.blogs.concat(result._id);
       await user.save();
-      response.status(201).json(result);
+      response.status(201).json(savedBlog);
     } else {
       response.status(400).json({ error: "title or author prop missing" });
     }
