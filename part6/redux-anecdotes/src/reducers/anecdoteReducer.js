@@ -1,3 +1,5 @@
+import anecdoteService from "../services/anecdotes";
+
 const anecdotesAtStart = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -47,10 +49,10 @@ export const initializeAnecdotes = (data) => {
     data,
   };
 };
-export const addAnec = (anecdote) => {
-  return {
-    type: "ADD_ANEC",
-    data: anecdote,
+export const addAnec = (data) => {
+  return async (dispatch) => {
+    const anecdote = await anecdoteService.createNew(asObject(data));
+    dispatch({ type: "ADD_ANEC", data: anecdote });
   };
 };
 
