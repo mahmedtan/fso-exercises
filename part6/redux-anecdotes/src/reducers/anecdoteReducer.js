@@ -9,7 +9,7 @@ const anecdotesAtStart = [
 
 const getId = () => (100000 * Math.random()).toFixed(0);
 
-const asObject = (anecdote) => {
+export const asObject = (anecdote) => {
   return {
     content: anecdote,
     id: getId(),
@@ -50,7 +50,7 @@ export const initializeAnecdotes = (data) => {
 export const addAnec = (anecdote) => {
   return {
     type: "ADD_ANEC",
-    data: asObject(anecdote),
+    data: anecdote,
   };
 };
 
