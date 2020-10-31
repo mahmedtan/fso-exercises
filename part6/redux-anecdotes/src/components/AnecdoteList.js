@@ -7,8 +7,8 @@ function AnecdoteList() {
     dispatch(addVote(id));
     console.log("vote", id);
   };
-  const anecdotes = useSelector((state) =>
-    state.sort((a, b) => b.votes - a.votes)
+  const anecdotes = useSelector(({ anecdotes }) =>
+    anecdotes.sort((a, b) => b.votes - a.votes)
   );
   const dispatch = useDispatch();
   return (
