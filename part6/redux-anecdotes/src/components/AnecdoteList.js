@@ -9,8 +9,10 @@ function AnecdoteList() {
     dispatch(sendNotification(`You voted '${content}'`));
     console.log("vote", id);
   };
-  const anecdotes = useSelector(({ anecdotes }) =>
-    anecdotes.sort((a, b) => b.votes - a.votes)
+  const anecdotes = useSelector(({ anecdotes, filter }) =>
+    anecdotes
+      .sort((a, b) => b.votes - a.votes)
+      .filter((anecdote) => anecdote.content.match(new RegExp(filter, "ig")))
   );
   const dispatch = useDispatch();
   return (
