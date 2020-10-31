@@ -9,7 +9,7 @@ const Notification = () => {
     setTimeout(() => {
       dispatch(clearNotification());
     }, 5000);
-  }, [notification]);
+  }, [notification, dispatch]);
   const style = {
     border: "solid",
     padding: 10,

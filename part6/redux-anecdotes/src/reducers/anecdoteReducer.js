@@ -17,14 +17,15 @@ const asObject = (anecdote) => {
   };
 };
 
-const initialState = anecdotesAtStart.map(asObject);
-
-const reducer = (state = initialState, action) => {
+const reducer = (state = [], action) => {
   switch (action.type) {
     case "ADD_VOTE":
       const toChange = state.find((anecdote) => anecdote.id === action.data.id);
       const changed = { ...toChange, votes: toChange.votes + 1 };
       return state.map((anec) => (anec.id !== action.data.id ? anec : changed));
+
+    case "INIT_ANECDOTES":
+      return action.data;
 
     case "ADD_ANEC":
       return [...state, action.data];
@@ -38,6 +39,12 @@ export const addVote = (id) => {
     data: {
       id,
     },
+  };
+};
+export const initializeAnecdotes = (data) => {
+  return {
+    type: "INIT_ANECDOTES",
+    data,
   };
 };
 export const addAnec = (anecdote) => {
