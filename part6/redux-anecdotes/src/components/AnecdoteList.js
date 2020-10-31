@@ -9,7 +9,7 @@ function AnecdoteList() {
 
   const vote = ({ id, content }) => {
     dispatch(addVote(id));
-    dispatch(sendNotification(`You voted '${content}'`));
+    dispatch(sendNotification(`You voted '${content}'`, 5));
     console.log("vote", id);
   };
   useEffect(() => {

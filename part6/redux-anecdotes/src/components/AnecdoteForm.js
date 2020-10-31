@@ -9,7 +9,7 @@ function AnecdoteForm() {
   const handleNewAnec = async (e) => {
     e.preventDefault();
     dispatch(addAnec(e.target.anecdote.value));
-    dispatch(sendNotification(`You created '${e.target.anecdote.value}'`));
+    dispatch(sendNotification(`You created '${e.target.anecdote.value}'`, 5));
   };
   return (
     <div>
