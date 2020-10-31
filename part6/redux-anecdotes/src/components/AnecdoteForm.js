@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { addAnec } from "../reducers/anecdoteReducer";
+import { sendNotification } from "../reducers/notificationReducer";
 
 function AnecdoteForm() {
   const dispatch = useDispatch();
@@ -8,6 +9,7 @@ function AnecdoteForm() {
   const handleNewAnec = (e) => {
     e.preventDefault();
     dispatch(addAnec(e.target.note.value));
+    dispatch(sendNotification(`You created '${e.target.note.value}'`));
   };
   return (
     <div>

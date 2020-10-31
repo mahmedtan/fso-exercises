@@ -1,4 +1,4 @@
-const initialState = "You got a notification";
+const initialState = "";
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -10,12 +10,15 @@ const reducer = (state = initialState, action) => {
       return state;
   }
 };
-export const sendNotification = (message) => ({
-  type: "NEW_NOTIFICATION",
-  data: {
-    message,
-  },
-});
+export const sendNotification = (message) => {
+  clearNotification();
+  return {
+    type: "NEW_NOTIFICATION",
+    data: {
+      message,
+    },
+  };
+};
 export const clearNotification = () => ({ type: "CLEAR_NOTIFICATION" });
 
 export default reducer;
