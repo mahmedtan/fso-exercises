@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require("apollo-server");
+const { v4: uuid } = require("uuid");
 
 let authors = [
   {
@@ -25,11 +26,6 @@ let authors = [
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
   },
 ];
-
-/*
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
- */
 
 let books = [
   {
@@ -97,6 +93,14 @@ const typeDefs = gql`
     id: String!
     genres: [String!]!
   }
+  type Mutation {
+    addBook(
+      title: String!
+      published: Int!
+      author: String!
+      genres: [String!]!
+    ): Book!
+  }
 
   type Query {
     bookCount: Int!
@@ -129,6 +133,16 @@ const resolvers = {
           0
         ),
       })),
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      authors.find((author) => author.name === args.author) ||
+        authors.push({ name: args.author, id: uuid() });
+
+      const book = { ...args, id: uuid() };
+      books = books.concat(book);
+      return book;
+    },
   },
 };
 
