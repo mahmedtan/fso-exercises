@@ -1,4 +1,9 @@
-const { ApolloServer, gql } = require("apollo-server");
+const {
+  ApolloServer,
+  gql,
+  ApolloError,
+  UserInputError,
+} = require("apollo-server");
 const { v4: uuid } = require("uuid");
 
 let authors = [
@@ -148,7 +153,15 @@ const resolvers = {
       authors = authors.map((author) =>
         author.name !== args.name ? author : { ...author, born: args.setBornTo }
       );
-      return authors.find((author) => author.name === args.name);
+      const author = authors.find((author) => author.name === args.name);
+
+      return {
+        ...author,
+        books: books.reduce(
+          (prev, current) => (current.author === author.name ? prev + 1 : prev),
+          0
+        ),
+      };
     },
   },
 };
