@@ -1,9 +1,9 @@
 import { useMutation } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SET_BIRTHYEAR } from "../graphql/mutations";
 import { ALL_AUTHORS } from "../graphql/queries";
 
-const AuthorBirthYearForm = () => {
+const AuthorBirthYearForm = ({ authors }) => {
   const [name, setName] = useState("");
   const [born, setBorn] = useState("");
   const [editAuthor] = useMutation(SET_BIRTHYEAR, {
@@ -23,13 +23,17 @@ const AuthorBirthYearForm = () => {
       <div>
         <label htmlFor="nameInput">
           name:
-          <input
-            type="text"
-            name="name"
+          <select
             id="nameInput"
             value={name}
             onChange={({ target: { value } }) => setName(value)}
-          />
+          >
+            {authors.map(({ name }) => (
+              <option value={name} key={name}>
+                {name}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 

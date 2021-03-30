@@ -36,7 +36,7 @@ const Authors = (props) => {
         </tbody>
       </table>
       <h2>Set Birth Year</h2>
-      <AuthorBirthYearForm />
+      <AuthorBirthYearForm authors={authors} />
     </div>
   );
 };
