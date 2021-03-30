@@ -1,40 +1,32 @@
-import { useMutation } from "@apollo/client";
-import React, { useState } from "react";
-import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from "../query";
+import React, { useState } from 'react'
 
 const NewBook = (props) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuhtor] = useState("");
-  const [published, setPublished] = useState("");
-  const [genre, setGenre] = useState("");
-  const [genres, setGenres] = useState([]);
-  const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
-    onError: (AppolloError) => {
-      console.log(AppolloError.graphQLErrors);
-    },
-  });
+  const [title, setTitle] = useState('')
+  const [author, setAuhtor] = useState('')
+  const [published, setPublished] = useState('')
+  const [genre, setGenre] = useState('')
+  const [genres, setGenres] = useState([])
 
   if (!props.show) {
-    return null;
+    return null
   }
 
   const submit = async (event) => {
-    event.preventDefault();
-    console.log("add book...");
-    addBook({ variables: { title, author, published, genres } });
+    event.preventDefault()
+    
+    console.log('add book...')
 
-    setTitle("");
-    setPublished(null);
-    setAuhtor("");
-    setGenres([]);
-    setGenre("");
-  };
+    setTitle('')
+    setPublished('')
+    setAuhtor('')
+    setGenres([])
+    setGenre('')
+  }
 
   const addGenre = () => {
-    setGenres(genres.concat(genre));
-    setGenre("");
-  };
+    setGenres(genres.concat(genre))
+    setGenre('')
+  }
 
   return (
     <div>
@@ -56,9 +48,9 @@ const NewBook = (props) => {
         <div>
           published
           <input
-            type="number"
+            type='number'
             value={published}
-            onChange={({ target }) => setPublished(+target.value)}
+            onChange={({ target }) => setPublished(target.value)}
           />
         </div>
         <div>
@@ -66,15 +58,15 @@ const NewBook = (props) => {
             value={genre}
             onChange={({ target }) => setGenre(target.value)}
           />
-          <button onClick={addGenre} type="button">
-            add genre
-          </button>
+          <button onClick={addGenre} type="button">add genre</button>
         </div>
-        <div>genres: {genres.join(" ")}</div>
-        <button type="submit">create book</button>
+        <div>
+          genres: {genres.join(' ')}
+        </div>
+        <button type='submit'>create book</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default NewBook;
+export default NewBook
