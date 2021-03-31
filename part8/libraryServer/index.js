@@ -1,5 +1,8 @@
 const { ApolloServer, gql } = require("apollo-server");
+const Mongoose = require("mongoose");
 const { v4: uuid } = require("uuid");
+const Author = require("./models/Author");
+const Book = require("./models/Book");
 
 let authors = [
   {
@@ -79,11 +82,20 @@ let books = [
   },
 ];
 
+Mongoose.connect(
+  "mongodb+srv://dylan:Dkdc18cv!@cluster0.if8ur.mongodb.net/library?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
+)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => console.log(err));
+
 const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     id: String!
     genres: [String!]!
   }
@@ -138,20 +150,39 @@ const resolvers = {
       })),
   },
   Mutation: {
-    addBook: (root, args) => {
-      authors = authors.find((author) => author.name === args.author)
-        ? authors
-        : authors.concat({ name: args.author, id: uuid() });
+    addBook: async (root, args) => {
+      try {
+        let author = await Author.findOne({ name: args.author });
+        console.log(author);
+        if (!author) {
+          author = new Author({ name: args.author });
+          await author.save();
+        }
+        const book = new Book({ ...args, author });
 
-      const book = { ...args, id: uuid() };
-      books = books.concat(book);
-      return book;
+        console.log("hey", book);
+
+        await book.save();
+        return book;
+      } catch (err) {
+        console.log(err);
+      }
     },
     editAuthor: (root, args) => {
       authors = authors.map((author) =>
         author.name === args.name ? { ...author, born: args.setBornTo } : author
       );
-      return authors.find((author) => author.name === args.name);
+      const savedAuthor = authors.find((author) => author.name === args.name);
+      return (
+        savedAuthor && {
+          ...savedAuthor,
+          bookCount: books.reduce(
+            (previous, current) =>
+              current.author === savedAuthor.name ? previous + 1 : previous,
+            0
+          ),
+        }
+      );
     },
   },
 };
