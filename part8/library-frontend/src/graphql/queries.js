@@ -22,6 +22,18 @@ export const ALL_BOOKS = gql`
     }
   }
 `;
+export const FAV_GENRE_BOOKS = gql`
+  query favoriteGenreBooks($genre: String!) {
+    allBooks(genre: $genre) {
+      title
+      author {
+        name
+      }
+      published
+      genres
+    }
+  }
+`;
 
 export const GET_USER = gql`
   query {
