@@ -1,4 +1,4 @@
-import { useApolloClient, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { LOGIN } from "../graphql/mutations";
 const Login = ({ setToken, setError }) => {
@@ -23,7 +23,7 @@ const Login = ({ setToken, setError }) => {
       setToken(result.data.login.value);
       window.localStorage.setItem("user-token", result.data.login.value);
     }
-  }, [result.data]);
+  }, [result.data, setToken]);
   return (
     <div>
       <form onSubmit={handleSubmit}>

@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SET_BIRTHYEAR } from "../graphql/mutations";
 import { ALL_AUTHORS } from "../graphql/queries";
 
