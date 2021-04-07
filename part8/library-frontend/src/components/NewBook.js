@@ -5,7 +5,7 @@ import { ALL_AUTHORS, ALL_BOOKS } from "../graphql/queries";
 
 const NewBook = (props) => {
   const [title, setTitle] = useState("");
-  const [author, setAuhtor] = useState("");
+  const [author, setAuthor] = useState("");
   const [published, setPublished] = useState("");
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
@@ -32,7 +32,7 @@ const NewBook = (props) => {
 
     setTitle("");
     setPublished("");
-    setAuhtor("");
+    setAuthor("");
     setGenres([]);
     setGenre("");
   };
@@ -56,7 +56,7 @@ const NewBook = (props) => {
           author
           <input
             value={author}
-            onChange={({ target }) => setAuhtor(target.value)}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
