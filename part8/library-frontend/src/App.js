@@ -3,8 +3,9 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import Login from "./components/Login";
 import NewBook from "./components/NewBook";
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient, useSubscription } from "@apollo/client";
 import Recommendation from "./components/Recommendation";
+import { BOOK_ADDED } from "./graphql/subscriptions";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -12,6 +13,11 @@ const App = () => {
   const [error, setError] = useState(null);
   const client = useApolloClient();
 
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(`Book Added ${subscriptionData.data.bookAdded.title}`);
+    },
+  });
   useEffect(() => {
     if (window.localStorage.getItem("user-token"))
       setToken(window.localStorage.getItem("user-token"));
