@@ -8,5 +8,6 @@ export const BOOK_DETAILS = gql`
     }
     published
     genres
+    id
   }
 `;

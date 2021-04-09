@@ -6,6 +6,7 @@ import NewBook from "./components/NewBook";
 import { useApolloClient, useSubscription } from "@apollo/client";
 import Recommendation from "./components/Recommendation";
 import { BOOK_ADDED } from "./graphql/subscriptions";
+import { ALL_BOOKS } from "./graphql/queries";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -13,9 +14,23 @@ const App = () => {
   const [error, setError] = useState(null);
   const client = useApolloClient();
 
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) =>
+      set.map((book) => book.id).includes(object.id);
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS });
+
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) },
+      });
+    }
+  };
+
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      window.alert(`Book Added ${subscriptionData.data.bookAdded.title}`);
+      updateCacheWith(subscriptionData.data.bookAdded);
     },
   });
   useEffect(() => {
@@ -65,7 +80,7 @@ const App = () => {
 
       <Books show={page === "books"} />
 
-      <NewBook show={page === "add"} />
+      <NewBook show={page === "add"} updateCacheWith={updateCacheWith} />
       <Recommendation show={page === "recommendation"} />
     </div>
   );
