@@ -3,7 +3,10 @@ const Author = require("./models/Author");
 const Book = require("./models/Book");
 const User = require("./models/User");
 const jwt = require("jsonwebtoken");
+const { PubSub } = require("apollo-server");
+const pubsub = new PubSub();
 require("dotenv").config();
+
 module.exports = {
   Query: {
     bookCount: async () => {
@@ -63,6 +66,7 @@ module.exports = {
         console.log("hey", book);
 
         await book.save();
+        pubsub.publish("ADDED_BOOK", { bookAdded: book });
         return book;
       } catch (err) {
         throw new UserInputError(err.message, {
@@ -122,6 +126,11 @@ module.exports = {
       } catch (err) {
         throw new UserInputError(err.message, { invalidArgs: args });
       }
+    },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(["ADDED_BOOK"]),
     },
   },
 };
