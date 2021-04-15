@@ -7,7 +7,7 @@ interface Result {
   target: number;
   average: number;
 }
-const calculateExercises = (daily: number[], target: number): Result => {
+export const calculateExercises = (daily: number[], target: number): Result => {
   const average = daily.reduce((prev, curr) => prev + curr, 0) / daily.length;
   const percentile = (average / target) * 100;
 
@@ -25,23 +25,23 @@ const calculateExercises = (daily: number[], target: number): Result => {
   };
 };
 
-interface ArgumentsExercises {
-  dailyHours: number[];
-  target: number;
-}
-const parseExerciseArguments = (args: string[]): ArgumentsExercises => {
-  if (process.argv.length < 4) throw new Error("Not enough arguments");
-  args.slice(2).forEach((item) => {
-    if (isNaN(Number(item))) {
-      throw new Error("Provided values were not numbers");
-    }
-  });
+// interface ArgumentsExercises {
+//   dailyHours: number[];
+//   target: number;
+// }
+// const parseExerciseArguments = (args: string[]): ArgumentsExercises => {
+//   if (process.argv.length < 4) throw new Error("Not enough arguments");
+//   args.slice(2).forEach((item) => {
+//     if (isNaN(Number(item))) {
+//       throw new Error("Provided values were not numbers");
+//     }
+//   });
 
-  return {
-    dailyHours: args.slice(3).map((item) => Number(item)),
-    target: Number(args[2]),
-  };
-};
+//   return {
+//     dailyHours: args.slice(3).map((item) => Number(item)),
+//     target: Number(args[2]),
+//   };
+// };
 
-const { dailyHours, target } = parseExerciseArguments(process.argv);
-console.log(calculateExercises(dailyHours, target));
+// const { dailyHours, target } = parseExerciseArguments(process.argv);
+// console.log(calculateExercises(dailyHours, target));
