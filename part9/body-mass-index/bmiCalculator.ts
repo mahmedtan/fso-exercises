@@ -11,15 +11,15 @@ interface Arguments {
   height: number;
   weight: number;
 }
-const parseArguments = (arguments: string[]): Arguments => {
+const parseArguments = (argss: string[]): Arguments => {
   if (process.argv.length < 4) throw new Error("Not enough arguments");
   if (process.argv.length > 4) throw new Error("Too many arguments");
-  if (isNaN(Number(arguments[2])) || isNaN(Number(arguments[3])))
+  if (isNaN(Number(argss[2])) || isNaN(Number(argss[3])))
     throw new Error("Provided values were not numbers");
   else
     return {
-      height: Number(arguments[2]),
-      weight: Number(arguments[3]),
+      height: Number(argss[2]),
+      weight: Number(argss[3]),
     };
 };
 
