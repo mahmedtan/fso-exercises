@@ -7,4 +7,21 @@ const calculateBmi = (height: number, weight: number): string => {
     : "Normal (healthy)";
 };
 
-console.log(calculateBmi(180, 74));
+interface Arguments {
+  height: number;
+  weight: number;
+}
+const parseArguments = (arguments: string[]): Arguments => {
+  if (process.argv.length < 4) throw new Error("Not enough arguments");
+  if (process.argv.length > 4) throw new Error("Too many arguments");
+  if (isNaN(Number(arguments[2])) || isNaN(Number(arguments[3])))
+    throw new Error("Provided values were not numbers");
+  else
+    return {
+      height: Number(arguments[2]),
+      weight: Number(arguments[3]),
+    };
+};
+
+const { height, weight } = parseArguments(process.argv);
+console.log(calculateBmi(height, weight));

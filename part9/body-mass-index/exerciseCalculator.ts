@@ -25,4 +25,23 @@ const calculateExercises = (daily: number[], target: number): Result => {
   };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+interface ArgumentsExercises {
+  dailyHours: number[];
+  target: number;
+}
+const parseExerciseArguments = (arguments: string[]): ArgumentsExercises => {
+  if (process.argv.length < 4) throw new Error("Not enough arguments");
+  arguments.slice(2).forEach((item) => {
+    if (isNaN(Number(item))) {
+      throw new Error("Provided values were not numbers");
+    }
+  });
+
+  return {
+    dailyHours: arguments.slice(3).map((item) => Number(item)),
+    target: Number(arguments[2]),
+  };
+};
+
+const { dailyHours, target } = parseExerciseArguments(process.argv);
+console.log(calculateExercises(dailyHours, target));
