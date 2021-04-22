@@ -13,8 +13,8 @@ router.post("/", (req, res) => {
     const newPatient = toNewPatient(req.body);
     const addedPatient = addNewPatient(newPatient);
     res.json(addedPatient);
-  } catch (error) {
-    res.status(400).send(error.message);
+  } catch (err) {
+    res.status(400).send(err.message);
   }
 });
 export default router;
