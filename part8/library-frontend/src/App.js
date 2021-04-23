@@ -5,8 +5,8 @@ import Login from "./components/Login";
 import NewBook from "./components/NewBook";
 import { useApolloClient, useSubscription } from "@apollo/client";
 import Recommendation from "./components/Recommendation";
-import { BOOK_ADDED } from "./graphql/subscriptions";
-import { ALL_BOOKS } from "./graphql/queries";
+import { AUTHOR_ADDED, BOOK_ADDED } from "./graphql/subscriptions";
+import { ALL_AUTHORS, ALL_BOOKS } from "./graphql/queries";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -14,7 +14,7 @@ const App = () => {
   const [error, setError] = useState(null);
   const client = useApolloClient();
 
-  const updateCacheWith = (addedBook) => {
+  const updateCacheWithBooks = (addedBook) => {
     const includedIn = (set, object) =>
       set.map((book) => book.id).includes(object.id);
 
@@ -27,10 +27,39 @@ const App = () => {
       });
     }
   };
+  const updateCacheWithAuthor = (addedAuthor) => {
+    const includedIn = (set, object) =>
+      set.map((author) => author.id).includes(object.id);
+
+    const dataInStore = client.readQuery({ query: ALL_AUTHORS });
+
+    if (!includedIn(dataInStore.allAuthors, addedAuthor)) {
+      client.writeQuery({
+        query: ALL_AUTHORS,
+        data: { allAuthors: dataInStore.allAuthors.concat(addedAuthor) },
+      });
+    } else {
+      client.writeQuery({
+        query: ALL_AUTHORS,
+        data: {
+          allAuthors: dataInStore.allAuthors.map((author) =>
+            author.id === addedAuthor.id ? addedAuthor : author
+          ),
+        },
+      });
+    }
+  };
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      updateCacheWith(subscriptionData.data.bookAdded);
+      updateCacheWithBooks(subscriptionData.data.bookAdded);
+    },
+  });
+
+  useSubscription(AUTHOR_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log("Line 21");
+      updateCacheWithAuthor(subscriptionData.data.authorAdded);
     },
   });
   useEffect(() => {
@@ -80,7 +109,10 @@ const App = () => {
 
       <Books show={page === "books"} />
 
-      <NewBook show={page === "add"} updateCacheWith={updateCacheWith} />
+      <NewBook
+        show={page === "add"}
+        updateCacheWithBooks={updateCacheWithBooks}
+      />
       <Recommendation show={page === "recommendation"} />
     </div>
   );

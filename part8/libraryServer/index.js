@@ -20,6 +20,8 @@ Mongoose.connect(
   })
   .catch((err) => console.log(err));
 
+Mongoose.set("debug", true);
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,

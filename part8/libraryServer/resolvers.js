@@ -33,7 +33,6 @@ module.exports = {
     allAuthors: async () => {
       const authors = await Author.find({});
       const books = await Book.find({}).populate("author");
-      console.log(books);
 
       return authors.map((author) => ({
         name: author.name,
@@ -56,17 +55,15 @@ module.exports = {
         if (!user) throw new AuthenticationError("Invalid Token");
 
         let author = await Author.findOne({ name: args.author });
-        console.log(author);
         if (!author) {
           author = new Author({ name: args.author });
           await author.save();
         }
         const book = new Book({ ...args, author });
 
-        console.log("hey", book);
-
         await book.save();
         pubsub.publish("ADDED_BOOK", { bookAdded: book });
+        pubsub.publish("ADDED_AUTHOR", { authorAdded: author });
         return book;
       } catch (err) {
         throw new UserInputError(err.message, {
@@ -131,6 +128,9 @@ module.exports = {
   Subscription: {
     bookAdded: {
       subscribe: () => pubsub.asyncIterator(["ADDED_BOOK"]),
+    },
+    authorAdded: {
+      subscribe: () => pubsub.asyncIterator(["ADDED_AUTHOR"]),
     },
   },
 };
