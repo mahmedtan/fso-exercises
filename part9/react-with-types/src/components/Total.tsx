@@ -1,6 +1,8 @@
-import { Props } from "./Content";
-
-const Total = ({ courseParts }: Props) => {
+const Total = ({
+  courseParts,
+}: {
+  courseParts: { name: string; exerciseCount: number; type: string }[];
+}) => {
   return (
     <div>
       <p>
